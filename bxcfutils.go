@@ -27,7 +27,7 @@ type MessageHubVcapCredentials struct {
 	Password         string   `json:"password"`
 }
 
-func getCurrEnvVCAPServices() (*cfenv.App, error) {
+func GetCurrEnvVCAPServices() (*cfenv.App, error) {
 	appEnv, err := cfenv.Current()
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func getCurrEnvVCAPServices() (*cfenv.App, error) {
 	return appEnv, nil
 }
 
-func getBluemixMessageHubCredentials(name, plan string) (MessageHubVcapCredentials, error) {
+func GetBluemixMessageHubCredentials(name, plan string) (MessageHubVcapCredentials, error) {
 	vcapServices := os.Getenv("VCAP_SERVICES")
 	if len(vcapServices) == 0 {
 		return MessageHubVcapCredentials{}, errors.New("vcapServices undefined")
