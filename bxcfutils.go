@@ -36,15 +36,15 @@ func GetCurrEnvVCAPServices() (*cfenv.App, error) {
 	return appEnv, nil
 }
 
-func GetBluemixMessageHubCredentials(name, plan string) (MessageHubVcapCredentials, error) {
+func GetBluemixMessageHubCredentials(name, plan string) (*MessageHubVcapCredentials, error) {
 	vcapServices := os.Getenv("VCAP_SERVICES")
 	if len(vcapServices) == 0 {
-		return MessageHubVcapCredentials{}, errors.New("vcapServices undefined")
+		return nil, errors.New("vcapServices undefined")
 	}
 	var vcap map[string][]VCAPService
 	err := json.Unmarshal([]byte(vcapServices), &vcap)
 	if err != nil {
-		return MessageHubVcapCredentials{}, errors.New("failed to parse vcapServices " + err.Error())
+		return nil, errors.New("failed to parse vcapServices: " + err.Error())
 	}
 	for vname, vservice := range vcap {
 		if !strings.HasPrefix(vname, name) {
@@ -62,9 +62,9 @@ func GetBluemixMessageHubCredentials(name, plan string) (MessageHubVcapCredentia
 					User:             vservice[i].Credentials.User,
 					Password:         vservice[i].Credentials.Password,
 				}
-				return creds, nil
+				return &creds, nil
 			}
 		}
 	}
-	return MessageHubVcapCredentials{}, errors.New("service instance not found in vcapServices")
+	return nil, errors.New("service instance not found in vcapServices")
 }
