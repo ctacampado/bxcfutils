@@ -1,2 +1,2 @@
 # bxcfutils
-utility package for IBM Cloud Cloud Foundry Go Apps
+utility package for Cloud Foundry Go Apps
